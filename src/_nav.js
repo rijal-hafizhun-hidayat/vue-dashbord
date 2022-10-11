@@ -2,7 +2,7 @@ export default [
   {
     component: 'CNavItem',
     name: 'Dashboard',
-    to: '/dashboard',
+    to: 'dashboard',
     icon: 'cil-speedometer',
     // badge: {
     //   color: 'primary',
@@ -16,7 +16,7 @@ export default [
   {
     component: 'CNavItem',
     name: 'Data',
-    to: '/data',
+    to: 'data',
     icon: '',
   },
   // {

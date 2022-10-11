@@ -12,43 +12,10 @@ const routes = [
     // component: DefaultLayout,
     //redirect: { name: 'Login' },
     component: () => import('@/views/modules/login/Login.vue')
-    // children: [
-    //   {
-    //     path: '/login',
-    //     name: 'Login',
-    //     component: () => import('@/views/modules/login/Login.vue'),
-
-    //   },
-    //   {
-    //     path: '/dashboard',
-    //     name: 'Dashboard',
-    //     // route level code-splitting
-    //     // this generates a separate chunk (about.[hash].js) for this route
-    //     // which is lazy-loaded when the route is visited.
-    //     component: () =>
-    //       import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-    //   },
-    //   {
-    //     path: '/profile',
-    //     name: 'Profile',
-    //     component: () => import('@/views/modules/profile/Profile.vue'),
-    //     //redirect: '/theme/typography',
-    //   },
-    //   {
-    //     path: '/theme/colors',
-    //     name: 'Colors',
-    //     component: () => import('@/views/theme/Colors.vue'),
-    //   },
-    //   {
-    //     path: '/theme/typography',
-    //     name: 'Typography',
-    //     component: () => import('@/views/theme/Typography.vue'),
-    //   },
-    // ],
   },
   {
     path: '/profile',
-    name: 'profile',
+    name: 'Profile',
     component: DefaultLayout,
     redirect: { name: 'Dashboard' },
     children: [
@@ -56,27 +23,16 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: () => import('@/views/Dashboard.vue'),
-        //add simple middleware
-        beforeEnter:  (to, from, next) => {
-          if(!localStorage.getItem('token')){
-            Swal.fire({
-              title: 'Alert',
-              text: 'Login Terlebih Dahulu',
-              icon: 'warning',
-              confirmButtonText: 'Ok'
-          })
-            return next({
-              name: 'Login'
-            })
-          }
-
-          return next()
-        }
       },
       {
         path: '/data',
         name: 'Data',
         component: () => import('@/views/modules/profile/Profile.vue')
+      },
+      {
+        path: '/create',
+        name: 'Create',
+        component: () => import('@/views/modules/profile/Create.vue')
       }
     ],
   },
@@ -121,6 +77,11 @@ const router = createRouter({
     // always scroll to top
     return { top: 0 }
   },
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !localStorage.getItem('token')) next({ name: 'Login' })
+  else next()
 })
 
 //config nprogress

@@ -7,6 +7,7 @@
                 :is-full-page="fullPage"/>
         </div>
         <CCol :xs="12">
+            <router-link :to="{ name: 'Create' }" class="btn btn-primary mb-4">Tambah</router-link>
             <CCard class="mb-4">
                 <CCardBody>
                     <CTable>

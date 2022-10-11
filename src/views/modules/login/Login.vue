@@ -79,7 +79,7 @@
             localStorage.setItem('token', res.data.token)
             localStorage.setItem('loggedIn', true)
             
-            return route.push({ name: 'profile' })
+            return route.push({ name: 'Profile' })
           }).catch((err) => {
             if(err.response.data.status == false){
               // console.log(err.response.data.message)
