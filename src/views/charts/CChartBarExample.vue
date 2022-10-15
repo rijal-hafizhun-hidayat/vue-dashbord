@@ -4,31 +4,49 @@
 
 <script>
 import { CChartBar } from '@coreui/vue-chartjs'
+import { ref } from '@vue/reactivity'
+import axios from 'axios'
+import { onMounted } from '@vue/runtime-core'
 export default {
   name: 'CChartBarExample',
   components: { CChartBar },
+  setup(){
+    let val = ''
+
+    onMounted(() => {
+      get()
+      //console.log(val)
+    })
+
+    function get(){
+      axios.get(`http://localhost:8000/api/chart`)
+      .then((res) => {
+        let jumlah = res.data
+        val = jumlah.map(a => a.total);
+        console.log(val)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+
+    return {
+      val, get
+    }
+  },
+
   computed: {
     defaultData() {
+      console.log(this.val)
       return {
         labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
+          'Perempuan',
+          'Laki-laki',
         ],
         datasets: [
           {
-            label: 'GitHub Commits',
-            backgroundColor: '#f87979',
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 12],
+            label: 'Jumlah',
+            backgroundColor: ['#f87979', '#7b79f8'],
+            data: [40, 20],
           },
         ],
       }

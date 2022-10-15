@@ -2,7 +2,7 @@
     <CCol :xs="12">
         <CCard class="mb-4">
             <CCardHeader>
-                <strong>Create Profile</strong>
+                <strong>Edit Profile</strong>
             </CCardHeader>
             <CCardBody>
                 <CRow class="mb-3">
@@ -22,15 +22,18 @@
                         Gender
                     </CFormLabel>
                     <div class="col-sm-10">
-                        <CFormSelect v-model="data.gender" aria-label="Default select example">
-                            <option selected value="">Open this select menu</option>
-                            <option value="1">Laki-laki</option>
+                        <CFormSelect v-model="data.gender" v-if="data.gender == 1">
+                            <option selected value="1">Laki-laki</option>
                             <option value="0">Perempuan</option>
+                        </CFormSelect>
+                        <CFormSelect v-model="data.gender" v-else>
+                            <option value="1">Laki-laki</option>
+                            <option selected value="0">Perempuan</option>
                         </CFormSelect>
                     </div>
                 </CRow>
                 <div class="mb-3">
-                    <CButton @click="insert" color="primary" class="px-4">Submit</CButton>
+                    <CButton @click="update" color="primary" class="px-4">Update</CButton>
                 </div>
             </CCardBody>
         </CCard>
@@ -38,43 +41,62 @@
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity'
-import axios from 'axios'
+import { onMounted, reactive } from '@vue/runtime-core'
+import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
-import { useRouter } from 'vue-router'
 
 export default {
-    name: 'Create',
+    name: 'Edit',
     setup(){
+
+        const route = useRoute()
+        const router = useRouter()
+
         const data = reactive({
             name: null,
             gender: null
         })
 
-        const route = useRouter()
 
-        function insert(){
-            axios.defaults.headers.post['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-            axios.post(`http://localhost:8000/api/profile`, {
+        onMounted(() => {
+            show()
+        })
+
+        function show(){
+            axios.get(`http://localhost:8000/api/profile/${route.params.id}`)
+            .then((res) => {
+                data.name = res.data.data.name
+                data.gender = res.data.data.gender
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+
+        function update(){
+            //console.log(data)
+            axios.defaults.headers.put['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
+            axios.put(`http://localhost:8000/api/profile/${route.params.id}`,{
                 name: data.name,
                 gender: data.gender
             })
             .then((res) => {
                 Swal.fire({
                     title: 'Success',
-                    text: 'insert profile data complete',
+                    text: 'update profile data complete',
                     icon: 'success',
                     confirmButtonText: 'Ok'
                 })
 
-                return route.push({ name: 'Data' })
+                return router.push({ name: 'Data' })
+                
             }).catch((err) => {
                 console.log(err)
             })
         }
 
-        return {
-            data, insert
+        return{
+            route, router, data, show, update
         }
     }
 }

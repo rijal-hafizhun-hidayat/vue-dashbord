@@ -7,13 +7,8 @@
           <CCardBody>
             <CRow>
               <CCol :sm="5">
-                <h4 id="traffic" class="card-title mb-0">Jumlah Profile</h4>
+                <h4 id="traffic" class="card-title mb-0">Grafik Profile</h4>
                 <div class="small text-medium-emphasis">January 2021</div>
-              </CCol>
-              <CCol :sm="7" class="d-none d-md-block">
-                <CButton color="primary" class="float-end">
-                  <CIcon icon="cil-cloud-download" />
-                </CButton>
               </CCol>
             </CRow>
             <CRow>

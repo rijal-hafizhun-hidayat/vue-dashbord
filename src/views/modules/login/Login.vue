@@ -65,7 +65,7 @@
 
       const route = useRouter()
 
-      localStorage.clear();
+      //localStorage.clear();
 
       function login(){
         axios.get(`http://localhost:8000/sanctum/csrf-cookie`)
@@ -76,8 +76,8 @@
           })
           .then((res) => {
             //console.log(res.data.token)
-            localStorage.setItem('token', res.data.token)
-            localStorage.setItem('loggedIn', true)
+            sessionStorage.setItem('token', res.data.token)
+            sessionStorage.setItem('loggedIn', true)
             
             return route.push({ name: 'Profile' })
           }).catch((err) => {

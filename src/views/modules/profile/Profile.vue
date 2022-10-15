@@ -28,8 +28,8 @@
                                 <CTableDataCell>
                                     <CButtonGroup role="group" aria-label="Basic mixed styles example">
                                         <CButton @click="destroy(profile.id, index)" color="danger">Delete</CButton>
-                                        <CButton color="warning">Edit</CButton>
-                                        <CButton color="success">Show</CButton>
+                                        <router-link :to="{ name: 'Edit', params: { id: profile.id }}" class="btn btn-warning">Edit</router-link>
+                                        <Show :id="profile.id"/>
                                     </CButtonGroup>
                                 </CTableDataCell>
                             </CTableRow>
@@ -48,10 +48,11 @@ import { onMounted } from '@vue/runtime-core'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import Show from '@/components/profile/Show.vue';
 
 export default {
     name:'Profile',
-    components: { Loading },
+    components: { Loading, Show },
     setup(){
         const profiles = ref([])
         let isLoading = ref(false)
@@ -78,7 +79,7 @@ export default {
         }
 
         function destroy(id, index){
-            axios.defaults.headers.delete['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+            axios.defaults.headers.delete['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
             axios.delete(`http://localhost:8000/api/profile/${id}`)
             .then((res) => {
                 profiles.value.splice(index, 1)

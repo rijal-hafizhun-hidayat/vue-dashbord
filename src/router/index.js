@@ -33,6 +33,11 @@ const routes = [
         path: '/create',
         name: 'Create',
         component: () => import('@/views/modules/profile/Create.vue')
+      },
+      {
+        path: '/edit/:id',
+        name: 'Edit',
+        component: () => import('@/views/modules/profile/Edit.vue')
       }
     ],
   },
@@ -80,8 +85,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && !localStorage.getItem('token')) next({ name: 'Login' })
-  else next()
+  if (to.name !== 'Login' && !sessionStorage.getItem('token')){
+    Swal.fire({
+      title: 'Error',
+      text: 'login terlebih dahulu',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    })
+    next({ name: 'Login' })
+  }
+  else{
+    next()
+  }
 })
 
 //config nprogress
