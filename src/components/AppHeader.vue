@@ -9,6 +9,7 @@
       </CHeaderBrand>
       <CHeaderNav>
         <CButton color="primary" class="px-2">Akun</CButton>
+        <CButton color="danger" @click="logOut" class="px-2 ms-2">Log Out</CButton>
       </CHeaderNav>
     </CContainer>
     <CHeaderDivider />
@@ -22,6 +23,7 @@
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
 import { logo } from '@/assets/brand/logo'
+import { useRouter } from 'vue-router'
 export default {
   name: 'AppHeader',
   components: {
@@ -29,8 +31,15 @@ export default {
     AppHeaderDropdownAccnt,
   },
   setup() {
+
+    const route = useRouter()
+
+    function logOut(){
+      sessionStorage.clear() 
+      return route.push({ name: 'Login' })
+    }
     return {
-      logo,
+      logo, route, logOut
     }
   },
 }

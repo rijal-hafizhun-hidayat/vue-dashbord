@@ -1,17 +1,15 @@
 <template>
-  <CChartBar :data="defaultData" />
+  <canvas id="myChart" width="100" height="50"></canvas>
 </template>
 
 <script>
-import { CChartBar } from '@coreui/vue-chartjs'
-import { ref } from '@vue/reactivity'
+import Chart from 'chart.js/auto';
+import { reactive, ref } from '@vue/reactivity'
 import axios from 'axios'
-import { onMounted } from '@vue/runtime-core'
+import { computed, onMounted } from '@vue/runtime-core'
 export default {
   name: 'CChartBarExample',
-  components: { CChartBar },
   setup(){
-    let val = ''
 
     onMounted(() => {
       get()
@@ -22,35 +20,67 @@ export default {
       axios.get(`http://localhost:8000/api/chart`)
       .then((res) => {
         let jumlah = res.data
-        val = jumlah.map(a => a.total);
-        console.log(val)
+        let val = jumlah.map(a => a.total);
+        chart(val)
       }).catch((err) => {
         console.log(err)
       })
     }
 
-    return {
-      val, get
-    }
-  },
+    function chart(val){
+      const ctx = document.getElementById('myChart')
+      let myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Perempuan', 'Laki-laki'],
+                    datasets: [{
+                        label: 'Gender',
+                        data: val,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-  computed: {
-    defaultData() {
-      console.log(this.val)
-      return {
-        labels: [
-          'Perempuan',
-          'Laki-laki',
-        ],
-        datasets: [
-          {
-            label: 'Jumlah',
-            backgroundColor: ['#f87979', '#7b79f8'],
-            data: [40, 20],
-          },
-        ],
-      }
-    },
-  },
+            myChart;
+    }
+
+    return {
+      get, chart
+    }
+  }
+
+  // computed: {
+  //   defaultData() {
+  //     console.log(this.val)
+  //     return {
+  //       labels: [
+  //         'Perempuan',
+  //         'Laki-laki',
+  //       ],
+  //       datasets: [
+  //         {
+  //           label: 'Jumlah',
+  //           backgroundColor: ['#f87979', '#7b79f8'],
+  //           data: [40, 20],
+  //         },
+  //       ],
+  //     }
+  //   },
+  // },
 }
 </script>

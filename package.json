@@ -30,6 +30,7 @@
     "@coreui/vue": "^4.1.0",
     "@coreui/vue-chartjs": "2.0.0",
     "axios": "^1.1.2",
+    "chart.js": "^3.9.1",
     "core-js": "^3.19.0",
     "moment": "^2.29.4",
     "nprogress": "^0.2.0",
