@@ -7,7 +7,7 @@
                 :is-full-page="fullPage"/>
         </div>
         <CCol :xs="12">
-            <router-link :to="{ name: 'create.data' }" class="btn btn-primary mb-4">Tambah</router-link>
+            <router-link :to="{ name: 'create.akun' }" class="btn btn-primary mb-4">Tambah</router-link>
             <CCard class="mb-4">
                 <CCardBody>
                     <CTable>
@@ -15,21 +15,20 @@
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Nama</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Username</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            <CTableRow v-for="( profile, index ) in profiles" :key="profile.id">
+                            <CTableRow v-for="( akun, index ) in akuns" :key="akun.id">
                                 <CTableHeaderCell scope="row">{{ index + 1 }}</CTableHeaderCell>
-                                <CTableDataCell>{{ profile.name }}</CTableDataCell>
-                                <CTableDataCell v-if="profile.gender == 1">Laki-laki</CTableDataCell>
-                                <CTableDataCell v-else>Perempuan</CTableDataCell>
+                                <CTableDataCell>{{ akun.name }}</CTableDataCell>
+                                <CTableDataCell>{{ akun.username }}</CTableDataCell>
                                 <CTableDataCell>
                                     <CButtonGroup role="group" aria-label="Basic mixed styles example">
-                                        <CButton @click="destroy(profile.id, index)" color="danger">Delete</CButton>
-                                        <router-link :to="{ name: 'edit.data', params: { id: profile.id }}" class="btn btn-warning">Edit</router-link>
-                                        <Show :id="profile.id"/>
+                                        <CButton @click="destroy(akun.id, index)" color="danger">Delete</CButton>
+                                        <CButton color="warning">Edit</CButton>
+                                        <CButton color="success">Show</CButton>
                                     </CButtonGroup>
                                 </CTableDataCell>
                             </CTableRow>
@@ -39,36 +38,32 @@
             </CCard>
         </CCol>
     </Crow>
-    
 </template>
+
 <script>
 import { ref } from '@vue/reactivity'
 import axios from 'axios'
 import { onMounted } from '@vue/runtime-core'
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
-import Show from '@/components/profile/Show.vue';
-
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
-    name:'Profile',
-    components: { Loading, Show },
+    name: 'akun',
+    components: { Loading },
     setup(){
-        const profiles = ref([])
-        let isLoading = ref(false)
-        let fullPage = ref(true)
 
-        //console.log(localStorage.getItem('token'))
+        const akuns = ref([])
+        const isLoading = ref(false)
 
         onMounted(() => {
-            getData()
+            get()
         })
 
-        function getData(){
+        function get(){
             isLoading.value = true
-            axios.get(`http://localhost:8000/api/profile`)
+            axios.defaults.headers.get['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
+            axios.get(`http://localhost:8000/api/akun`)
             .then((res) => {
-                profiles.value = res.data.data
+                akuns.value = res.data.data
             }).catch((err) => {
                 console.log(err)
             })
@@ -80,22 +75,16 @@ export default {
 
         function destroy(id, index){
             axios.defaults.headers.delete['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
-            axios.delete(`http://localhost:8000/api/profile/${id}`)
+            axios.delete(`http://localhost:8000/api/akun/${id}`)
             .then((res) => {
-                profiles.value.splice(index, 1)
-                return Swal.fire({
-                    title: 'Success',
-                    text: 'destroy profile data complete',
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                })
+                akuns.value.splice(index, 1)
             }).catch((err) => {
                 console.log(err)
             })
         }
 
         return {
-            profiles, isLoading, fullPage, getData, destroy
+            akuns, isLoading, get, destroy
         }
     }
 }

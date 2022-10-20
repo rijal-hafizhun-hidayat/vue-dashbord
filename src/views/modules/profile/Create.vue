@@ -54,7 +54,7 @@ export default {
         const route = useRouter()
 
         function insert(){
-            axios.defaults.headers.post['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+            axios.defaults.headers.post['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
             axios.post(`http://localhost:8000/api/profile`, {
                 name: data.name,
                 gender: data.gender

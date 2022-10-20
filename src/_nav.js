@@ -16,7 +16,13 @@ export default [
   {
     component: 'CNavItem',
     name: 'Data',
-    to: 'data',
+    to: { name: 'Data'},
+    icon: '',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Akun',
+    to: { name: 'Akun'},
     icon: '',
   },
   // {

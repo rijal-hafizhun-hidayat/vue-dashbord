@@ -12,22 +12,16 @@
         <CButton color="danger" @click="logOut" class="px-2 ms-2">Log Out</CButton>
       </CHeaderNav>
     </CContainer>
-    <CHeaderDivider />
-    <CContainer fluid>
-      <AppBreadcrumb />
-    </CContainer>
   </CHeader>
 </template>
 
 <script>
-import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
 import { logo } from '@/assets/brand/logo'
 import { useRouter } from 'vue-router'
 export default {
   name: 'AppHeader',
   components: {
-    AppBreadcrumb,
     AppHeaderDropdownAccnt,
   },
   setup() {

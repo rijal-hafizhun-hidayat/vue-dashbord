@@ -34,7 +34,7 @@ export default {
                 data: {
                     labels: ['Perempuan', 'Laki-laki'],
                     datasets: [{
-                        label: 'Gender',
+                        label: 'Jumlah',
                         data: val,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',

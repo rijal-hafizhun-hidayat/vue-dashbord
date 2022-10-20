@@ -24,21 +24,37 @@ const routes = [
         name: 'Dashboard',
         component: () => import('@/views/Dashboard.vue'),
       },
+
+      //start route data
       {
         path: '/data',
         name: 'Data',
         component: () => import('@/views/modules/profile/Profile.vue')
       },
       {
-        path: '/create',
-        name: 'Create',
+        path: '/data/create',
+        name: 'create.data',
         component: () => import('@/views/modules/profile/Create.vue')
       },
       {
-        path: '/edit/:id',
-        name: 'Edit',
+        path: '/data/edit/:id',
+        name: 'edit.data',
         component: () => import('@/views/modules/profile/Edit.vue')
-      }
+      },
+      //finish route data
+
+      //start rooute akun
+      {
+        path: '/akun',
+        name: 'Akun',
+        component: () => import('@/views/modules/akun/Index.vue')
+      },
+      {
+        path: '/akun/create',
+        name: 'create.akun',
+        component: () => import('@/views/modules/akun/Create.vue')
+      },
+      //finish route akun
     ],
   },
   {
