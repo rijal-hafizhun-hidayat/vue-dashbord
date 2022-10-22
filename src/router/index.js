@@ -54,6 +54,11 @@ const routes = [
         name: 'create.akun',
         component: () => import('@/views/modules/akun/Create.vue')
       },
+      {
+        path: '/akun/edit/:id',
+        name: 'edit.akun',
+        component: () => import('@/views/modules/akun/Edit.vue')
+      },
       //finish route akun
     ],
   },

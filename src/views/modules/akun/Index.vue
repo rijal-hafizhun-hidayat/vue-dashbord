@@ -27,7 +27,7 @@
                                 <CTableDataCell>
                                     <CButtonGroup role="group" aria-label="Basic mixed styles example">
                                         <CButton @click="destroy(akun.id, index)" color="danger">Delete</CButton>
-                                        <CButton color="warning">Edit</CButton>
+                                        <router-link :to="{ name: 'edit.akun', params: { id: akun.id }}" class="btn btn-warning">Edit</router-link>
                                         <Show :id="akun.id"/>
                                     </CButtonGroup>
                                 </CTableDataCell>
