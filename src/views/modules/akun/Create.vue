@@ -12,6 +12,7 @@
                     <div class="col-sm-10">
                         <CFormInput
                         v-model="akun.name"
+                        @change="setUsername()"
                         id="nama"
                         type="text"
                         />
@@ -22,7 +23,7 @@
                         Role
                     </CFormLabel>
                     <div class="col-sm-10">
-                        <CFormSelect v-model="akun.level" @change="set($event)" aria-label="Default select example">
+                        <CFormSelect v-model="akun.level" @change="setRole($event)" aria-label="Default select example">
                             <option selected value="">-- pilih --</option>
                             <option value="1">Admin</option>
                             <option value="0">Biasa</option>
@@ -66,6 +67,8 @@
 <script>
 import { reactive } from '@vue/reactivity'
 import axios from 'axios'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import { useRouter } from 'vue-router'
 export default {
     name: 'Create',
     setup(){
@@ -76,15 +79,21 @@ export default {
             level: null
         })
 
-        function set(event){
+        const route = useRouter()
+
+        function setUsername(){
+            akun.username = akun.name.split(" ").join("")
+        }
+
+        function setRole(event){
             let role = event.target.value
 
             if( role == 1){
-                akun.username = akun.name.split(" ").join("")
+                //akun.username = akun.name.split(" ").join("")
                 akun.password = Math.random().toString(36).slice(-8)+'@admin'
             }
             else{
-                akun.username = akun.name.split(" ").join("")
+                //akun.username = akun.name.split(" ").join("")
                 akun.password = Math.random().toString(36).slice(-8)
             }            
         }
@@ -97,6 +106,14 @@ export default {
                 password: akun.password,
                 level: akun.level
             }).then((res) => {
+                Swal.fire({
+                    title: 'Success',
+                    text: 'insert profile data complete',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                })
+
+                return route.push({ name: 'Akun' })
                 console.log(res)
             }).catch((err) => {
                 console.log(err)
@@ -104,7 +121,7 @@ export default {
         }
 
         return {
-            akun, set, insert
+            akun, route, setRole, setUsername, insert
         }
     }
 }

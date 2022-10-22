@@ -43,7 +43,7 @@ const routes = [
       },
       //finish route data
 
-      //start rooute akun
+      //start route akun
       {
         path: '/akun',
         name: 'Akun',

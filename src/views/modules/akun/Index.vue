@@ -28,7 +28,7 @@
                                     <CButtonGroup role="group" aria-label="Basic mixed styles example">
                                         <CButton @click="destroy(akun.id, index)" color="danger">Delete</CButton>
                                         <CButton color="warning">Edit</CButton>
-                                        <CButton color="success">Show</CButton>
+                                        <Show :id="akun.id"/>
                                     </CButtonGroup>
                                 </CTableDataCell>
                             </CTableRow>
@@ -46,9 +46,10 @@ import axios from 'axios'
 import { onMounted } from '@vue/runtime-core'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
+import Show from '@/components/akun/Show.vue'
 export default {
     name: 'akun',
-    components: { Loading },
+    components: { Loading, Show },
     setup(){
 
         const akuns = ref([])
