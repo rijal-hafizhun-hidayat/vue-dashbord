@@ -15,6 +15,11 @@
                         type="text"
                         v-model="data.name"
                         />
+                        <div v-if="e.name">
+                            <div class="alert alert-danger mt-1" role="alert">
+                                {{ e.name[0] }}
+                            </div>
+                        </div>
                     </div>
                 </CRow>
                 <CRow class="mb-3">
@@ -27,6 +32,11 @@
                             <option value="1">Laki-laki</option>
                             <option value="0">Perempuan</option>
                         </CFormSelect>
+                        <div v-if="e.gender">
+                            <div class="alert alert-danger mt-1" role="alert">
+                                {{ e.gender[0] }}
+                            </div>
+                        </div>
                     </div>
                 </CRow>
                 <div class="mb-3">
@@ -38,7 +48,7 @@
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity'
+import { reactive, ref } from '@vue/reactivity'
 import axios from 'axios'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useRouter } from 'vue-router'
@@ -50,6 +60,8 @@ export default {
             name: null,
             gender: null
         })
+
+        const e = ref([])
 
         const route = useRouter()
 
@@ -69,12 +81,13 @@ export default {
 
                 return route.push({ name: 'Data' })
             }).catch((err) => {
-                console.log(err)
+                e.value = err.response.data.errors
+                console.log(e)
             })
         }
 
         return {
-            data, insert
+            data, e, insert
         }
     }
 }

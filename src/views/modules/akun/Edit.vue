@@ -2,7 +2,7 @@
     <CCol :xs="12">
         <CCard class="mb-4">
             <CCardHeader>
-                <strong>Edit Profile</strong>
+                <strong>Edit Akun</strong>
             </CCardHeader>
             <CCardBody>
                 <CRow class="mb-3">
@@ -18,18 +18,15 @@
                     </div>
                 </CRow>
                 <CRow class="mb-3">
-                    <CFormLabel for="gender" class="col-sm-2 col-form-label">
-                        Gender
+                    <CFormLabel for="username" class="col-sm-2 col-form-label">
+                        Username
                     </CFormLabel>
                     <div class="col-sm-10">
-                        <CFormSelect v-model="data.gender" v-if="data.gender == 1">
-                            <option selected value="1">Laki-laki</option>
-                            <option value="0">Perempuan</option>
-                        </CFormSelect>
-                        <CFormSelect v-model="data.gender" v-else>
-                            <option value="1">Laki-laki</option>
-                            <option selected value="0">Perempuan</option>
-                        </CFormSelect>
+                        <CFormInput
+                        id="username"
+                        type="text"
+                        v-model="data.username"
+                        />
                     </div>
                 </CRow>
                 <div class="mb-3">
@@ -51,8 +48,7 @@ export default {
         const route = useRoute()
         const router = useRouter()
 
-        const akun = ref('')
-
+        const data = ref('')
         onMounted(() => {
             get()
         })
@@ -61,14 +57,15 @@ export default {
             axios.defaults.headers.get['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
             axios.get(`http://localhost:8000/api/akun/${route.params.id}`)
             .then((res) => {
-                console.log(res)
+                data.value = res.data
+                console.log(data)
             }).catch((err) => {
                 console.log(err)
             })
         }
 
         return {
-            route, router, get
+            route, router, data, get
         }
         
     },

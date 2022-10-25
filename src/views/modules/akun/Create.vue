@@ -16,6 +16,11 @@
                         id="nama"
                         type="text"
                         />
+                        <div v-if="e.name">
+                            <div class="alert alert-danger mt-1" role="alert">
+                                {{ e.name[0] }}
+                            </div>
+                        </div>
                     </div>
                 </CRow>
                 <CRow class="mb-3">
@@ -28,6 +33,11 @@
                             <option value="1">Admin</option>
                             <option value="0">Biasa</option>
                         </CFormSelect>
+                        <div v-if="e.level">
+                            <div class="alert alert-danger mt-1" role="alert">
+                                {{ e.level[0] }}
+                            </div>
+                        </div>
                     </div>
                 </CRow>
                 <CRow class="mb-3">
@@ -41,6 +51,11 @@
                         type="text"
                         disabled readonly
                         />
+                        <div v-if="e.username">
+                            <div class="alert alert-danger mt-1" role="alert">
+                                {{ e.username[0] }}
+                            </div>
+                        </div>
                     </div>
                 </CRow>
                 <CRow class="mb-3">
@@ -54,6 +69,11 @@
                         type="text"
                         disabled readonly
                         />
+                        <div v-if="e.password">
+                            <div class="alert alert-danger mt-1" role="alert">
+                                {{ e.password[0] }}
+                            </div>
+                        </div>
                     </div>
                 </CRow>
                 <div class="mb-3">
@@ -65,7 +85,7 @@
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity'
+import { reactive, ref } from '@vue/reactivity'
 import axios from 'axios'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { useRouter } from 'vue-router'
@@ -79,6 +99,8 @@ export default {
             level: null
         })
 
+        const e = ref([])
+
         const route = useRouter()
 
         function setUsername(){
@@ -89,7 +111,7 @@ export default {
             let role = event.target.value
 
             if( role == 1){
-                //akun.username = akun.name.split(" ").join("")
+                //akun.username = akun.name+'@admin'
                 akun.password = Math.random().toString(36).slice(-8)+'@admin'
             }
             else{
@@ -114,14 +136,13 @@ export default {
                 })
 
                 return route.push({ name: 'Akun' })
-                console.log(res)
             }).catch((err) => {
-                console.log(err)
+                e.value = err.response.data.errors
             })
         }
 
         return {
-            akun, route, setRole, setUsername, insert
+            akun, route, e, setRole, setUsername, insert
         }
     }
 }

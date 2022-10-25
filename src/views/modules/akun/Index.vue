@@ -47,6 +47,8 @@ import { onMounted } from '@vue/runtime-core'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import Show from '@/components/akun/Show.vue'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
 export default {
     name: 'akun',
     components: { Loading, Show },
@@ -79,6 +81,12 @@ export default {
             axios.delete(`http://localhost:8000/api/akun/${id}`)
             .then((res) => {
                 akuns.value.splice(index, 1)
+                return Swal.fire({
+                    title: 'Success',
+                    text: 'Delete Akun Complete',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                })
             }).catch((err) => {
                 console.log(err)
             })
