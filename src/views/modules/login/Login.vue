@@ -75,7 +75,7 @@
             password: data.password
           })
           .then((res) => {
-            //console.log(res.data.token)
+            sessionStorage.setItem('role', res.data.role)
             sessionStorage.setItem('token', res.data.token)
             sessionStorage.setItem('loggedIn', true)
             

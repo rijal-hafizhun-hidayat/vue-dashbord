@@ -14,6 +14,7 @@ import 'nprogress/nprogress.css';
 
 //set credential axios with true
 axios.defaults.withCredentials = true
+axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`
 
 const app = createApp(App)
 app.use(store)

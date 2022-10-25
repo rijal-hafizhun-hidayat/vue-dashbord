@@ -39,6 +39,17 @@ const routes = [
       {
         path: '/data/edit/:id',
         name: 'edit.data',
+        beforeEnter: (to, from, next) => {
+          if(to.name == 'edit.data' && sessionStorage.getItem('role') == 0){
+            Swal.fire({
+              title: 'Error',
+              text: 'Gagal',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            })
+            return next({ name: 'Data' })
+          }
+        },
         component: () => import('@/views/modules/profile/Edit.vue')
       },
       //finish route data
@@ -113,10 +124,21 @@ router.beforeEach((to, from, next) => {
       icon: 'error',
       confirmButtonText: 'Ok'
     })
-    next({ name: 'Login' })
+    return next({ name: 'Login' })
   }
+
+  // if(to.name !== 'edit.data' && sessionStorage.getItem('role') !== 1){
+  //   Swal.fire({
+  //     title: 'Error',
+  //     text: 'Gagal',
+  //     icon: 'error',
+  //     confirmButtonText: 'Ok'
+  //   })
+  //   return next({ name: 'Data' })
+  // }
+
   else{
-    next()
+    return next()
   }
 })
 

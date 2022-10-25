@@ -43,6 +43,7 @@ export default {
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)'
+                            
                         ],
                         borderWidth: 2
                     }]
